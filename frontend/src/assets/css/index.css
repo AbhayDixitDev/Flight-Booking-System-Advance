@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import Preline Pro's CSS from your assets folder */
+@import "src/assets/preline-pro/css/preline-pro.css";
+
