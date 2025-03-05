@@ -1,9 +1,10 @@
 // src/pages/adminPages/ForgetPassword.jsx
 import React, { useState } from "react";
 import { message } from "antd";
+import { FaEnvelope, FaLock } from "react-icons/fa";
 import apiService from "../../services/apiService";
 
-const ForgetPassword = () => {
+const ChangePassword = () => { // Renamed to reflect functionality
   const [formValues, setFormValues] = useState({
     email: "",
     currentPassword: "",
@@ -21,7 +22,7 @@ const ForgetPassword = () => {
     e.preventDefault();
     const { email, currentPassword, newPassword } = formValues;
     if (!email || !currentPassword || !newPassword) {
-      message.error("Please fill in all the fields");
+      message.error("Please fill in all fields");
       return;
     }
     try {
@@ -31,23 +32,24 @@ const ForgetPassword = () => {
         newPassword,
       });
       message.success(response.data.message);
+      setFormValues({ email: "", currentPassword: "", newPassword: "" }); // Reset form on success
     } catch (error) {
       message.error(error.response?.data?.message || "Password change failed");
     }
   };
 
   return (
-    <div className="flex  justify-center bg-gray-100 p-10">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-2xl font-semibold text-center text-gray-900 mb-4">
+    <div className="py-6">
+      <div className="max-w-md mx-auto bg-white shadow-xl rounded-xl p-6">
+        <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">
           Change Admin Password
         </h2>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Email
+            <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <FaEnvelope className="mr-2 text-indigo-600" /> Email
             </label>
             <input
               type="email"
@@ -55,15 +57,15 @@ const ForgetPassword = () => {
               placeholder="Enter your registered email"
               value={formValues.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 placeholder-gray-400"
               required
             />
           </div>
 
           {/* Current Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Current Password
+            <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <FaLock className="mr-2 text-indigo-600" /> Current Password
             </label>
             <input
               type="password"
@@ -71,15 +73,15 @@ const ForgetPassword = () => {
               placeholder="Enter your current password"
               value={formValues.currentPassword}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 placeholder-gray-400"
               required
             />
           </div>
 
           {/* New Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              New Password
+            <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <FaLock className="mr-2 text-indigo-600" /> New Password
             </label>
             <input
               type="password"
@@ -87,7 +89,7 @@ const ForgetPassword = () => {
               placeholder="Enter your new password"
               value={formValues.newPassword}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 placeholder-gray-400"
               required
             />
           </div>
@@ -95,7 +97,7 @@ const ForgetPassword = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium"
+            className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 transition duration-200 font-semibold"
           >
             Change Password
           </button>
@@ -105,4 +107,4 @@ const ForgetPassword = () => {
   );
 };
 
-export default ForgetPassword;
+export default ChangePassword; // Updated export to match renamed component

@@ -11,12 +11,12 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      navigate(isAdmin ? "/admin" : "/user");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const user = localStorage.getItem("user");
+  //   // if (user) {
+  //   //   navigate(isAdmin ? "/admin" : "/user");
+  //   // }
+  // }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,20 +37,20 @@ const Login = () => {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 px-6">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-2xl font-semibold text-center text-gray-800">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-600 to-blue-700 px-6">
+      <div className="w-full max-w-md bg-white shadow-2xl rounded-xl p-8 transform transition-all hover:scale-105 duration-300">
+        <h2 className="text-3xl font-bold text-center text-gray-900 mb-6">
           {isAdmin ? "Admin Login" : "User Login"}
         </h2>
-        <form onSubmit={handleSubmit} className="mt-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">
-              <FaEnvelope className="inline-block mr-2" /> Email
+            <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <FaEnvelope className="mr-2 text-indigo-600" /> Email
             </label>
             <input
               type="email"
-              className="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 placeholder-gray-400"
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -59,13 +59,13 @@ const Login = () => {
           </div>
 
           {/* Password Field */}
-          <div className="mt-3">
-            <label className="block text-sm font-medium text-gray-700">
-              <FaLock className="inline-block mr-2" /> Password
+          <div>
+            <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <FaLock className="mr-2 text-indigo-600" /> Password
             </label>
             <input
               type="password"
-              className="mt-1 w-full px-3 py-2 border rounded-lg focus:ring focus:ring-blue-200"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 placeholder-gray-400"
               placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -76,20 +76,20 @@ const Login = () => {
           {/* Login Button */}
           <button
             type="submit"
-            className="mt-5 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            className="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 transition duration-200 font-semibold"
           >
             {isAdmin ? "Login as Admin" : "Login as User"}
           </button>
         </form>
 
         {/* Switch to Admin/User Login */}
-        <div className="text-center mt-3">
+        <div className="text-center mt-6">
           <button
             onClick={() => setIsAdmin(!isAdmin)}
-            className="text-blue-600 hover:underline"
+            className="text-indigo-600 hover:text-indigo-800 font-medium transition duration-200 flex items-center justify-center mx-auto"
           >
-            {isAdmin ? "Switch to User Login" : "Switch to Admin Login"}{" "}
-            <FaUserShield className="inline-block ml-1" />
+            {isAdmin ? "Switch to User Login" : "Switch to Admin Login"}
+            <FaUserShield className="ml-2" />
           </button>
         </div>
 
@@ -97,9 +97,9 @@ const Login = () => {
         <div className="text-center mt-4">
           <button
             onClick={() => navigate("/register")}
-            className="text-gray-700 hover:underline"
+            className="text-gray-600 hover:text-gray-800 font-medium transition duration-200"
           >
-            Don't have an account? Register here.
+            Don't have an account? <span className="text-indigo-600 hover:underline">Register here</span>
           </button>
         </div>
       </div>

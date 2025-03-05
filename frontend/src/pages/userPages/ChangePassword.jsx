@@ -1,5 +1,8 @@
 // src/components/userComponent/ChangePassword.jsx
 import React, { useState } from "react";
+import { message } from "antd";
+import { FaLock } from "react-icons/fa";
+import apiService from "../../services/apiService";
 
 const ChangePassword = () => {
   const [formData, setFormData] = useState({
@@ -12,59 +15,81 @@ const ChangePassword = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.newPassword !== formData.confirmPassword) {
-      alert("New passwords do not match!");
+    const { currentPassword, newPassword, confirmPassword } = formData;
+
+    if (!currentPassword || !newPassword || !confirmPassword) {
+      message.error("Please fill in all fields");
       return;
     }
-    alert("Password changed successfully!");
+    if (newPassword !== confirmPassword) {
+      message.error("New passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await apiService.post("/user/changePassword", {
+        currentPassword,
+        newPassword,
+      });
+      message.success(response.data.message);
+      setFormData({ currentPassword: "", newPassword: "", confirmPassword: "" }); // Reset form on success
+    } catch (error) {
+      message.error(error.response?.data?.message || "Failed to change password");
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10 px-4">
-      <div className="w-full max-w-md bg-white shadow-lg rounded-xl p-6">
-        <h2 className="text-2xl font-semibold text-center text-gray-900">Change Password</h2>
+    <div className="py-6">
+      <div className="max-w-md mx-auto bg-white shadow-xl rounded-xl p-6">
+        <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">Change Password</h2>
 
-        <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {/* Current Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Current Password</label>
+            <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <FaLock className="mr-2 text-blue-600" /> Current Password
+            </label>
             <input
               type="password"
               name="currentPassword"
               placeholder="Enter current password"
               value={formData.currentPassword}
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400"
               required
             />
           </div>
 
           {/* New Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">New Password</label>
+            <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <FaLock className="mr-2 text-blue-600" /> New Password
+            </label>
             <input
               type="password"
               name="newPassword"
               placeholder="Enter new password"
               value={formData.newPassword}
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400"
               required
             />
           </div>
 
           {/* Confirm Password */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
+            <label className="flex items-center text-sm font-medium text-gray-700 mb-2">
+              <FaLock className="mr-2 text-blue-600" /> Confirm Password
+            </label>
             <input
               type="password"
               name="confirmPassword"
               placeholder="Re-enter new password"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="mt-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300 focus:border-blue-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 placeholder-gray-400"
               required
             />
           </div>
@@ -72,7 +97,7 @@ const ChangePassword = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition font-medium"
+            className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 transition duration-200 font-semibold"
           >
             Change Password
           </button>

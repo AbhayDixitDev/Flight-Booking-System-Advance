@@ -1,6 +1,7 @@
 // src/components/adminComponent/AdminSidebar.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { FaPlane, FaBuilding, FaCity, FaLock, FaBars, FaTimes } from "react-icons/fa";
 
 const AdminSidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,66 +11,63 @@ const AdminSidebar = () => {
       {/* Sidebar Toggle Button - Visible on Small Screens */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 bg-gray-800 text-white p-2 rounded-lg focus:ring focus:ring-gray-500"
+        className="md:hidden fixed top-4 left-4 z-50 bg-indigo-600 text-white p-2 rounded-lg hover:bg-indigo-700 focus:ring-2 focus:ring-indigo-300 transition duration-200"
       >
-        {isOpen ? "✖" : "☰"}
+        {isOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
       </button>
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-gray-800 text-white shadow-lg transform ${
-          isOpen ? "translate-x-0" : "-translate-x-64"
+      style={{zIndex: "1000"}}
+        className={`fixed bg-gray-200 top-0 left-0 h-full w-64 bg-gradient-to-b from-indigo-800 to-gray-900 text-white shadow-2xl transform ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
         } md:translate-x-0 transition-transform duration-300 ease-in-out p-6 z-40`}
       >
-        <div className="mb-8 ml-14 lg:ml-6 flex justify-between items-center">
-          <h2 className="text-2xl font-bold">Dashboard</h2>
+        <div className="mb-10 flex items-center justify-between">
+          <h2 className="text-2xl text-gray-200 font-bold tracking-tight">Dashboard</h2>
           {/* Close Button (Small Screens) */}
-          {/* <button
+          <button
             onClick={() => setIsOpen(false)}
-            className="md:hidden text-white text-xl"
+            className="md:hidden text-white hover:text-indigo-300 transition duration-200"
           >
-            ✖
-          </button> */}
+            <FaTimes size={24} />
+          </button>
         </div>
 
-        <nav className="space-y-4">
+        <nav className="space-y-3">
           <Link
             to="/admin/addFlight"
-            className="block px-4 py-2 rounded hover:bg-gray-700 transition-colors"
-            style={{ textDecoration: "none" }}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-700 hover:text-indigo-100 transition duration-200"
           >
-            Add Flight
+            <FaPlane className="text-indigo-400" /> Add Flight
           </Link>
           <Link
             to="/admin/addAirline"
-            className="block px-4 py-2 rounded hover:bg-gray-700 transition-colors"
-            style={{ textDecoration: "none" }}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-700 hover:text-indigo-100 transition duration-200"
           >
-            Add Airline
+            <FaBuilding className="text-indigo-400" /> Add Airline
           </Link>
           <Link
             to="/admin/addAirport"
-            className="block px-4 py-2 rounded hover:bg-gray-700 transition-colors"
-            style={{ textDecoration: "none" }}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-700 hover:text-indigo-100 transition duration-200"
           >
-            Add City
+            <FaCity className="text-indigo-400" /> Add City
           </Link>
           <Link
             to="/admin/changePassword"
-            className="block px-4 py-2 rounded hover:bg-gray-700 transition-colors"
-            style={{ textDecoration: "none" }}
+            className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-indigo-700 hover:text-indigo-100 transition duration-200"
           >
-            Change Password
+            <FaLock className="text-indigo-400" /> Change Password
           </Link>
         </nav>
       </aside>
 
-      {/* Overlay Background (Closes Sidebar When Clicked) */}
+      {/* Overlay Background (Closes Sidebar on Click) */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black opacity-50 md:hidden"
+          className="fixed inset-0 bg-black opacity-50 md:hidden z-30"
           onClick={() => setIsOpen(false)}
-        ></div>
+        />
       )}
     </>
   );

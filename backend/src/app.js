@@ -46,7 +46,7 @@ app.use('/api/user', userRoutes);
 
 // Global Error Handling Middleware
 app.use((err, req, res, next) => {
-  console.error('Error middleware:', err);
+  // console.error('Error middleware:', err);
   res.status(err.statusCode || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',

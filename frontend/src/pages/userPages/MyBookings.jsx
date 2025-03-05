@@ -1,40 +1,74 @@
 // src/components/userComponent/MyBookings.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { message } from "antd";
+import apiService from "../../services/apiService";
 
 const MyBookings = () => {
-  const [bookings, setBookings] = useState([
-    { id: 1, flight: "Flight A", date: "2025-03-15", status: "Confirmed" },
-    { id: 2, flight: "Flight B", date: "2025-04-02", status: "Pending" },
-  ]);
+  const [bookings, setBookings] = useState([]);
+
+  useEffect(() => {
+    const fetchBookings = async () => {
+      try {
+        const response = await apiService.get("/user/myBookings");
+        setBookings(response.data.data || []);
+      } catch (error) {
+        message.error(error.response?.data?.message || "Failed to fetch bookings");
+      }
+    };
+    fetchBookings();
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center py-10 px-4">
-      <div className="w-full max-w-4xl bg-white shadow-lg rounded-xl p-6">
-        <h2 className="text-2xl font-semibold text-center text-gray-900">My Bookings</h2>
+    <div className="py-6">
+      <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-xl p-6">
+        <h2 className="text-2xl font-bold text-gray-900 text-center mb-6">My Bookings</h2>
 
-        <div className="overflow-x-auto mt-4">
-          <table className="w-full border border-gray-200 rounded-lg">
-            <thead className="bg-gray-50">
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white rounded-lg overflow-hidden">
+            <thead className="bg-blue-600 text-white">
               <tr>
-                <th className="p-3 text-left text-gray-700 font-medium">Flight</th>
-                <th className="p-3 text-left text-gray-700 font-medium">Date</th>
-                <th className="p-3 text-left text-gray-700 font-medium">Status</th>
+                <th className="py-3 px-4 text-left text-sm font-semibold">Flight</th>
+                <th className="py-3 px-4 text-left text-sm font-semibold">Date</th>
+                <th className="py-3 px-4 text-left text-sm font-semibold">Status</th>
               </tr>
             </thead>
-            <tbody>
-              {bookings.map((booking, index) => (
-                <tr key={booking.id} className="border-b last:border-none hover:bg-gray-50">
-                  <td className="p-3 text-gray-800">{booking.flight}</td>
-                  <td className="p-3 text-gray-800">{booking.date}</td>
-                  <td
-                    className={`p-3 font-semibold ${
-                      booking.status === "Confirmed" ? "text-green-600" : "text-yellow-500"
-                    }`}
+            <tbody className="text-gray-700">
+              {bookings.length > 0 ? (
+                bookings.map((booking, index) => (
+                  <tr
+                    key={booking._id || index} // Use _id if available from API
+                    className="border-b hover:bg-gray-100 transition duration-150"
                   >
-                    {booking.status}
+                    <td className="py-3 px-4">
+                      {booking.flightDetails?.flightNumber || "N/A"} -{" "}
+                      {booking.flightDetails?.departureCity || "N/A"} to{" "}
+                      {booking.flightDetails?.arrivalCity || "N/A"}
+                    </td>
+                    <td className="py-3 px-4">
+                      {booking.bookingDate
+                        ? new Date(booking.bookingDate).toLocaleDateString()
+                        : "N/A"}
+                    </td>
+                    <td
+                      className={`py-3 px-4 font-semibold ${
+                        booking.status === "Confirmed"
+                          ? "text-green-600"
+                          : booking.status === "Pending"
+                          ? "text-yellow-500"
+                          : "text-red-500"
+                      }`}
+                    >
+                      {booking.status || "Unknown"}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" className="py-4 px-4 text-center text-gray-500">
+                    No bookings found
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

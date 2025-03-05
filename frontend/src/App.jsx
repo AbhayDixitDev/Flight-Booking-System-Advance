@@ -14,7 +14,6 @@ import SearchFlight from './pages/userPages/SearchFlight';
 import BookFlight from './pages/userPages/BookFlight';
 import MyBookings from './pages/userPages/MyBookings';
 import ChangePassword from './pages/userPages/ChangePassword';
-import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   return (
@@ -25,7 +24,6 @@ const App = () => {
         <Route path="/register" element={<Registration />} />
 
         {/* Protected routes */}
-        <Route element={<PrivateRoute />}>
           {/* Admin nested routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<BookingHistory />} />
@@ -43,7 +41,6 @@ const App = () => {
             <Route path="myBookings" element={<MyBookings />} />
             <Route path="changePassword" element={<ChangePassword />} />
           </Route>
-        </Route>
       </Routes>
     </BrowserRouter>
   );
